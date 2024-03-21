@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace Xeon.XTween
 {
@@ -113,6 +114,19 @@ namespace Xeon.XTween
             => GetTween<FloatTween>().SetAccsssor(() => self.position.z, value => self.SetZ(value)).Setup(end, duration, type);
         public static Tweener TweenMove(this Transform self, Vector3 end, float duration, EaseType type = EaseType.InOutQuad)
             => GetTween<Vector3Tween>().SetAccsssor(() => self.position, value => self.position = value).Setup(end, duration, type);
+        
+        public static Tweener TweenBezier(this Transform self, Vector3 end, Vector3 controlPoint1, Vector3 controlPoint2, float duration, EaseType type = EaseType.InOutQuad)
+        {
+            var tween = GetTween<BezierVector3Tween>().SetAccsssor(() => self.position, value => self.position = value) as BezierVector3Tween;
+            tween.Setup(end, controlPoint1, controlPoint2, duration, type);
+            return tween;
+        }
+        public static Tweener TweenBezier(this Transform self, List<BezierNode3D> nodes, float duration, EaseType type = EaseType.InOutQuad)
+        {
+            var tween = GetTween<BezierVector3Tween>().SetAccsssor(() => self.position, value => self.position = value) as BezierVector3Tween;
+            tween.Setup(nodes, duration, type);
+            return tween;
+        }
 
         // 移動系(ローカル座標)
         public static Tweener TweenLocalMoveX(this Transform self, float end, float duration, EaseType type = EaseType.InOutQuad)
@@ -123,6 +137,20 @@ namespace Xeon.XTween
             => GetTween<FloatTween>().SetAccsssor(() => self.localPosition.z, value => self.SetLocalZ(value)).Setup(end, duration, type);
         public static Tweener TweenLocalMove(this Transform self, Vector3 end, float duration, EaseType type = EaseType.InOutQuad)
             => GetTween<Vector3Tween>().SetAccsssor(() => self.localPosition, value => self.localPosition = value).Setup(end, duration, type);
+
+        public static Tweener TweenLocalBezier(this Transform self, Vector3 end, Vector3 controlPoint1, Vector3 controlPoint2, float duration, EaseType type = EaseType.InOutQuad)
+        {
+            var tween = GetTween<BezierVector3Tween>().SetAccsssor(() => self.localPosition, value => self.localPosition = value) as BezierVector3Tween;
+            tween.Setup(end, controlPoint1, controlPoint2, duration, type);
+            return tween;
+        }
+
+        public static Tweener TweenLocalBezier(this Transform self, List<BezierNode3D> nodes, float duration, EaseType type = EaseType.InOutQuad)
+        {
+            var tween = GetTween<BezierVector3Tween>().SetAccsssor(() => self.localPosition, value => self.localPosition = value) as BezierVector3Tween;
+            tween.Setup(nodes, duration, type);
+            return tween;
+        }
 
         // 回転系
         public static Tweener TweenRotateX(this Transform self, float end, float duration, EaseType type = EaseType.InOutQuad)

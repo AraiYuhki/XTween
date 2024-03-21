@@ -48,6 +48,7 @@ namespace Xeon.XTween
             pools[typeof(Vector4Tween)] = new LinkedPool<ITween>(() => OnCreate<Vector4Tween>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
             pools[typeof(ColorTween)] = new LinkedPool<ITween>(() => OnCreate<ColorTween>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
             pools[typeof(QuaternionTween)] = new LinkedPool<ITween>(() => OnCreate<QuaternionTween>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
+            pools[typeof(BezierVector3Tween)] = new LinkedPool<ITween>(() => OnCreate<BezierVector3Tween>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
             pools[typeof(Sequence)] = new LinkedPool<ITween>(() => OnCreate<Sequence>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
 
             Application.onBeforeRender -= Update;
@@ -142,5 +143,42 @@ namespace Xeon.XTween
 
         public static Sequence Sequence()
             => Instance.pools[typeof(Sequence)].Get() as Sequence;
+
+        private static TTweener To<TTweener, TValue>(Func<TValue> getter, Action<TValue> setter, TValue end, float duration, EaseType ease = EaseType.InOutQuad)
+            where TTweener : TweenCore<TValue>
+            => Get<TTweener>().SetAccsssor(getter, setter).Setup(end, duration, ease) as TTweener;
+
+        public static IntTween To(Func<int> getter, Action<int> setter, int end, float duration, EaseType ease = EaseType.InOutQuad)
+            => To<IntTween, int>(getter, setter, end, duration, ease);
+        public static FloatTween To(Func<float> getter, Action<float> setter, float end, float duration, EaseType ease = EaseType.InOutQuad)
+            => To<FloatTween, float>(getter, setter, end, duration, ease);
+        public static LongTween To(Func<long> getter, Action<long> setter, long end, float duration, EaseType ease = EaseType.InOutQuad)
+            => To<LongTween, long>(getter, setter, end, duration, ease);
+        public static Vector2Tween To(Func<Vector2> getter, Action<Vector2> setter, Vector2 end, float duration, EaseType ease = EaseType.InOutQuad)
+            => To<Vector2Tween, Vector2>(getter, setter, end, duration, ease);
+        public static Vector3Tween To(Func<Vector3> getter, Action<Vector3> setter, Vector3 end, float duration, EaseType ease = EaseType.InOutQuad)
+            => To<Vector3Tween, Vector3>(getter, setter, end, duration, ease);
+        public static Vector4Tween To(Func<Vector4> getter, Action<Vector4> setter, Vector4 end, float duration, EaseType ease = EaseType.InOutQuad)
+            => To<Vector4Tween, Vector4>(getter, setter, end, duration, ease);
+        public static QuaternionTween To(Func<Quaternion> getter, Action<Quaternion> setter, Quaternion end, float duration, EaseType ease = EaseType.InOutQuad)
+            => To<QuaternionTween, Quaternion>(getter, setter, end, duration, ease);
+        public static ColorTween To(Func<Color> getter, Action<Color> setter, Color end, float duration, EaseType ease = EaseType.InOutQuad)
+            => To<ColorTween, Color>(getter, setter, end, duration, ease);
+
+        public static BezierVector2Tween Bezier(Func<Vector2> getter, Action<Vector2> setter, List<BezierNode2D> nodes, float duration, EaseType ease = EaseType.InOutQuad)
+        {
+            var tweener = Get<BezierVector2Tween>();
+            tweener.SetAccsssor(getter, setter);
+            tweener.Setup(nodes, duration, ease, false);
+            return tweener;
+        }
+
+        public static BezierVector3Tween Bezier(Func<Vector3> getter, Action<Vector3> setter, List<BezierNode3D> nodes, float duration, EaseType ease = EaseType.InOutQuad)
+        {
+            var tween = Get<BezierVector3Tween>();
+            tween.SetAccsssor(getter, setter);
+            tween.Setup(nodes, duration, ease, false);
+            return tween;
+        }
     }
 }
