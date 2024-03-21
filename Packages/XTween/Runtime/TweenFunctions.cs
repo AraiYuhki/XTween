@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +6,8 @@ namespace Xeon.XTween
 {
     public enum EaseType
     {
+        Linear,
+
         InSine,
         OutSine,
         InOutSine,
@@ -61,6 +62,7 @@ namespace Xeon.XTween
 
         private static readonly Dictionary<EaseType, Func<float, float>> functions = new()
         {
+            { EaseType.Linear, Linear },
             { EaseType.InSine, InSine },
             { EaseType.OutSine, OutSine },
             { EaseType.InOutSine, InOutSine },
@@ -95,6 +97,7 @@ namespace Xeon.XTween
 
         public static float Evaluate(EaseType type, float time)
             => functions[type](time);
+        public static float Linear(float time) => time;
 
         public static float InSine(float time) => 1 - Mathf.Cos((time * Mathf.PI) / 2);
         public static float OutSine(float time) => Mathf.Sin((time * Mathf.PI) / 2);
