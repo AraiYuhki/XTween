@@ -16,7 +16,7 @@ namespace Xeon.XTween
             return this;
         }
 
-        public TweenCore<T> Setup(T end, float duration, EaseType easeType = EaseType.InOutQuad, bool isLoop = false)
+        public virtual TweenCore<T> Setup(T end, float duration, EaseType easeType = EaseType.InOutQuad, bool isLoop = false)
         {
             this.end = end;
             this.duration = duration;
@@ -42,7 +42,7 @@ namespace Xeon.XTween
         public override void Update()
         {
             if (!IsPlaying || IsCompleted || IsKilled) return;
-            elapsed = Mathf.Min(elapsed + UnityEngine.Time.deltaTime, FullDuration);
+            elapsed = Mathf.Min(elapsed + Time.fixedDeltaTime, FullDuration);
             time = Mathf.Clamp(elapsed - delay, 0f, 1f) / duration;
             setter?.Invoke(GetValue(TweenFunctions.Evaluate(easeType, time)));
 
