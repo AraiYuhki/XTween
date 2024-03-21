@@ -12,6 +12,13 @@ namespace Xeon.XTween
             self.color = color;
         }
 
+        private static void SetAlpha(this SpriteRenderer self, float alpha)
+        {
+            var color = self.color;
+            color.a = alpha;
+            self.color = color;
+        }
+
         private static void SetPivotX(this RectTransform self, float x)
         {
             var pivot = self.pivot;
@@ -35,6 +42,11 @@ namespace Xeon.XTween
         public static Tweener TweenFade(this Graphic self, float end, float duration, EaseType type = EaseType.InOutQuad)
             => GetTween<FloatTween>().SetAccsssor(() => self.color.a, value => self.SetAlpha(value)).Setup(end, duration, type);
         public static Tweener TweenColor(this Graphic self, Color end, float duration, EaseType type = EaseType.InOutQuad)
+            => GetTween<ColorTween>().SetAccsssor(() => self.color, value => self.color = value).Setup(end, duration, type);
+
+        public static Tweener TweenFade(this SpriteRenderer self, float end, float duration, EaseType type = EaseType.InOutQuad)
+            => GetTween<FloatTween>().SetAccsssor(() => self.color.a, value => self.SetAlpha(value)).Setup(end, duration, type);
+        public static Tweener TweenColor(this SpriteRenderer self, Color end, float duration, EaseType type = EaseType.InOutQuad)
             => GetTween<ColorTween>().SetAccsssor(() => self.color, value => self.color = value).Setup(end, duration, type);
 
         // RectTransform系
