@@ -89,6 +89,11 @@ namespace Xeon.XTween
         {
             IsSequenced = IsPlaying = IsCompleted = IsPaused = IsKilled = false;
             StartTime = time = elapsed = 0f;
+        }
+
+        public virtual void Clear()
+        {
+            Reset();
             onComplete = onKill = onLoop = onUpdate = null;
         }
 

@@ -128,6 +128,13 @@ namespace Xeon.XTween
             return tween;
         }
 
+        public static Tweener TweenCatmulRom(this Transform self, List<Vector3> points, float duration, EaseType type = EaseType.InOutQuad)
+        {
+            var tween = GetTween<CatmullRomTween3D>().SetAccsssor(() => self.position, value => self.position = value) as CatmullRomTween3D;
+            tween.Setup(points, duration, type);
+            return tween;
+        }
+
         // 移動系(ローカル座標)
         public static Tweener TweenLocalMoveX(this Transform self, float end, float duration, EaseType type = EaseType.InOutQuad)
             => GetTween<FloatTween>().SetAccsssor(() => self.localPosition.x, value => self.SetLocalX(value)).Setup(end, duration, type);
@@ -149,6 +156,13 @@ namespace Xeon.XTween
         {
             var tween = GetTween<BezierVector3Tween>().SetAccsssor(() => self.localPosition, value => self.localPosition = value) as BezierVector3Tween;
             tween.Setup(nodes, duration, type);
+            return tween;
+        }
+
+        public static Tweener TweenLocalCatmulRom(this Transform self, List<Vector3> points, float duration, EaseType type = EaseType.InOutQuad)
+        {
+            var tween = GetTween<CatmullRomTween3D>().SetAccsssor(() => self.localPosition, value => self.localPosition = value) as CatmullRomTween3D;
+            tween.Setup(points, duration, type);
             return tween;
         }
 

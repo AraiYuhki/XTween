@@ -49,6 +49,8 @@ namespace Xeon.XTween
             pools[typeof(ColorTween)] = new LinkedPool<ITween>(() => OnCreate<ColorTween>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
             pools[typeof(QuaternionTween)] = new LinkedPool<ITween>(() => OnCreate<QuaternionTween>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
             pools[typeof(BezierVector3Tween)] = new LinkedPool<ITween>(() => OnCreate<BezierVector3Tween>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
+            pools[typeof(BezierVector2Tween)] = new LinkedPool<ITween>(() => OnCreate<BezierVector2Tween>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
+            pools[typeof(CatmullRomTween3D)] = new LinkedPool<ITween>(() => OnCreate<CatmullRomTween3D>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
             pools[typeof(Sequence)] = new LinkedPool<ITween>(() => OnCreate<Sequence>(), OnGet, OnRelease, OnDestroy, true, defaultPool);
 
             Application.onBeforeRender -= Update;
@@ -178,6 +180,14 @@ namespace Xeon.XTween
             var tween = Get<BezierVector3Tween>();
             tween.SetAccsssor(getter, setter);
             tween.Setup(nodes, duration, ease, false);
+            return tween;
+        }
+
+        public static CatmullRomTween3D CatmullRom(Func<Vector3> getter, Action<Vector3> setter, List<Vector3> points, float duration, EaseType type = EaseType.InOutQuad)
+        {
+            var tween = Get<CatmullRomTween3D>();
+            tween.SetAccsssor(getter, setter);
+            tween.Setup(points, duration, type, false);
             return tween;
         }
     }

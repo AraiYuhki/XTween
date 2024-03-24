@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -35,12 +35,15 @@ namespace Xeon.XTween
         }
     }
 
-    public class BezierTween
+    internal class BezierUpdater
     {
         private int nodeCount = 0;
         private float elapsedBetweenNode = 0f;
         private int currentNodeIndex = 0;
         private float durationBetweenNode = 0f;
+
+        public int CurrentIndex => currentNodeIndex;
+
         public void Reset()
         {
             elapsedBetweenNode = 0f;
@@ -53,11 +56,12 @@ namespace Xeon.XTween
             this.nodeCount = nodeCount;
             durationBetweenNode = duration / nodeCount;
         }
+
         public float UpdateElapsed()
         {
-            elapsedBetweenNode = elapsedBetweenNode + Time.fixedDeltaTime;
+            elapsedBetweenNode += Time.fixedDeltaTime;
             if (currentNodeIndex >= nodeCount)
-                elapsedBetweenNode = Mathf.Min(1.0f, elapsedBetweenNode);
+                elapsedBetweenNode = Mathf.Min(1f, elapsedBetweenNode);
 
             if (elapsedBetweenNode > durationBetweenNode)
             {
@@ -77,8 +81,7 @@ namespace Xeon.XTween
     public class BezierVector2Tween : Vector2Tween
     {
         private List<BezierNode2D> nodes = new();
-        private BezierTween updater = new BezierTween();
-        private int currentNodeIndex = 0;
+        private BezierUpdater updater = new BezierUpdater();
 
         public override TweenCore<Vector2> Setup(Vector2 end, float duration, EaseType easeType = EaseType.InOutQuad, bool isLoop = false)
         {
@@ -89,10 +92,10 @@ namespace Xeon.XTween
         {
             this.duration = duration;
             this.easeType = easeType;
+            this.IsLoop = isLoop;
             FullDuration = duration + delay;
             updater.Reset();
             elapsed = 0f;
-            currentNodeIndex = 0;
             return this;
         }
 
@@ -134,7 +137,6 @@ namespace Xeon.XTween
             if (Mathf.Abs(elapsed - FullDuration) >= float.Epsilon) return;
 
             elapsed = 0f;
-            currentNodeIndex = 0;
             updater.Reset();
             if (IsLoop)
             {
@@ -153,10 +155,11 @@ namespace Xeon.XTween
             var time = updater.UpdateElapsed();
 
             var startPosition = start;
-            // Node‚ÌƒCƒ“ƒfƒbƒNƒX‚ª1ˆÈã‚Ìê‡‚Íˆê‚Â‘O‚Ìƒm[ƒh‚ÌÀ•W‚ðŽn“_‚É‚·‚é
-            if (currentNodeIndex > 0)
-                startPosition = nodes[currentNodeIndex - 1].end;
-            var endNode = nodes[currentNodeIndex];
+            var nodeIndex = updater.CurrentIndex;
+            // Nodeã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒ1ä»¥ä¸Šã®å ´åˆã¯ä¸€ã¤å‰ã®ãƒŽãƒ¼ãƒ‰ã®åº§æ¨™ã‚’å§‹ç‚¹ã«ã™ã‚‹
+            if (nodeIndex > 0)
+                startPosition = nodes[nodeIndex - 1].end;
+            var endNode = nodes[nodeIndex];
             var reverse = 1.0f - time;
             return
                 startPosition * Mathf.Pow(reverse, 3) +
@@ -169,8 +172,7 @@ namespace Xeon.XTween
     public class BezierVector3Tween : Vector3Tween
     {
         private List<BezierNode3D> nodes = new();
-        private BezierTween updater = new BezierTween();
-        private int currentNodeIndex = 0;
+        private BezierUpdater updater = new BezierUpdater();
 
         public override TweenCore<Vector3> Setup(Vector3 end, float duration, EaseType easeType = EaseType.InOutQuad, bool isLoop = false)
         {
@@ -185,7 +187,6 @@ namespace Xeon.XTween
             FullDuration = duration + delay;
             updater.Reset();
             elapsed = 0f;
-            currentNodeIndex = 0;
             return this;
         }
 
@@ -227,7 +228,6 @@ namespace Xeon.XTween
             if (Mathf.Abs(elapsed - FullDuration) >= float.Epsilon) return;
 
             elapsed = 0f;
-            currentNodeIndex = 0;
             updater.Reset();
             if (IsLoop)
             {
@@ -246,10 +246,11 @@ namespace Xeon.XTween
             var time = updater.UpdateElapsed();
 
             var startPosition = start;
-            // Node‚ÌƒCƒ“ƒfƒbƒNƒX‚ª1ˆÈã‚Ìê‡‚Íˆê‚Â‘O‚Ìƒm[ƒh‚ÌÀ•W‚ðŽn“_‚É‚·‚é
-            if (currentNodeIndex > 0)
-                startPosition = nodes[currentNodeIndex - 1].end;
-            var endNode = nodes[currentNodeIndex];
+            var nodeIndex = updater.CurrentIndex;
+            // Nodeã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒ1ä»¥ä¸Šã®å ´åˆã¯ä¸€ã¤å‰ã®ãƒŽãƒ¼ãƒ‰ã®åº§æ¨™ã‚’å§‹ç‚¹ã«ã™ã‚‹
+            if (nodeIndex > 0)
+                startPosition = nodes[nodeIndex - 1].end;
+            var endNode = nodes[nodeIndex];
             var reverse = 1.0f - time;
             return
                 startPosition * Mathf.Pow(reverse, 3) +
