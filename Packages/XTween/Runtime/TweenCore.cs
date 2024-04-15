@@ -42,7 +42,10 @@ namespace Xeon.XTween
         public override void Update()
         {
             if (!IsPlaying || IsCompleted || IsKilled) return;
-            elapsed = Mathf.Min(elapsed + Time.fixedDeltaTime, FullDuration);
+            if (!useUnscaledTime && Time.timeScale <= 0f) return;
+
+            elapsed += useUnscaledTime ? Time.fixedUnscaledDeltaTime : Time.fixedDeltaTime;
+            elapsed = Mathf.Min(elapsed, FullDuration);
             time = Mathf.Clamp(elapsed - delay, 0f, 1f) / duration;
             setter?.Invoke(GetValue(TweenFunctions.Evaluate(easeType, time)));
 

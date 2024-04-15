@@ -22,6 +22,7 @@ namespace Xeon.XTween
         protected float elapsed = 0f;
         protected float duration = 0.2f;
         protected bool playOnAwake = false;
+        protected bool useUnscaledTime = true;
         protected EaseType easeType = EaseType.InOutQuad;
 
         protected Action onUpdate;
@@ -58,6 +59,7 @@ namespace Xeon.XTween
         public void SetStartTime(float time) => StartTime = time;
         public void SetIsSequenced() => IsSequenced = true;
         public virtual void SetPlayOnAwake(bool flag) => playOnAwake = flag;
+        public void SetUseUnscaledTime(bool flag) => useUnscaledTime = flag;
 
         public Tweener OnComplete(Action onComplete)
         {
