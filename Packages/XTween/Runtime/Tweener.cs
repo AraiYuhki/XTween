@@ -90,7 +90,7 @@ namespace Xeon.XTween
         public virtual void Reset()
         {
             IsSequenced = IsPlaying = IsCompleted = IsPaused = IsKilled = false;
-            StartTime = time = elapsed = 0f;
+            StartTime = time = elapsed = delay = duration = 0f;
         }
 
         public virtual void Clear()
