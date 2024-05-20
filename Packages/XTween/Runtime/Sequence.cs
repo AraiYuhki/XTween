@@ -101,6 +101,7 @@ namespace Xeon.XTween
 
         public Sequence Append(Tweener tween)
         {
+            tween.SetPlayOnAwake(false);
             tween.SetStartTime(lastTweenInsertTime);
             tween.SetIsSequenced();
             lastTweenInsertTime += tween.FullDuration;
@@ -111,6 +112,7 @@ namespace Xeon.XTween
 
         public Sequence Join(Tweener tween)
         {
+            tween.SetPlayOnAwake(false);
             var lastTween = tweens.LastOrDefault();
             tween.SetStartTime(lastTween == null ? 0f : lastTween.StartTime);
             tween.SetIsSequenced();
@@ -127,6 +129,7 @@ namespace Xeon.XTween
 
         public Sequence Insert(float atPosition, Tweener tween)
         {
+            tween.SetPlayOnAwake(false);
             tween.SetStartTime(atPosition);
             tween.SetIsSequenced();
             lastTweenInsertTime = Mathf.Max(lastTweenInsertTime, atPosition + tween.FullDuration);
