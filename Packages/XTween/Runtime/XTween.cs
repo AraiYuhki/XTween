@@ -69,7 +69,7 @@ namespace Xeon.XTween
         private bool WantsToQuit()
         {
             KillAll();
-            return false;
+            return true;
         }
 
 #if UNITY_EDITOR
