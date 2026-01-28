@@ -9,11 +9,13 @@ public class ScriptImportPostProcessor : AssetPostprocessor
 {
     public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
     {
-        var targets = importedAssets.Where(path => System.IO.Path.GetExtension(path) == ".cs");
-        targets = targets.Concat(movedAssets.Where(path => System.IO.Path.GetExtension(path) == ".cs"));
+        var targets = importedAssets
+            .Concat(movedAssets)
+            .Where(path => System.IO.Path.GetExtension(path) == ".cs")
+            .Distinct();
         foreach (var path in targets)
         {
-            var fullPath = path.Replace("Assets", Application.dataPath);
+            var fullPath = GetFullPath(path);
             var encoding = EncodeHelper.GetJpEncoding(fullPath);
             if (encoding == null)
             {
@@ -35,5 +37,16 @@ public class ScriptImportPostProcessor : AssetPostprocessor
             }
             Debug.Log($"{path} is encoded {encoding.EncodingName} to UTF8");
         }
+    }
+
+    private static string GetFullPath(string assetPath)
+    {
+        const string assetsPrefix = "Assets/";
+        if (assetPath.StartsWith(assetsPrefix))
+        {
+            return Path.Combine(Application.dataPath, assetPath.Substring(assetsPrefix.Length));
+        }
+
+        return Path.GetFullPath(assetPath);
     }
 }
