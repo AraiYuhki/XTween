@@ -5,7 +5,8 @@ namespace Xeon.XTween
 {
     public class Tweener
     {
-        public float FullDuration { get; protected set; } = 0.2f;
+        private const float DefaultDuration = 0.2f;
+        public float FullDuration { get; protected set; } = DefaultDuration;
 
         public bool IsSequenced { get; protected set; } = false;
         public float StartTime { get; protected set; } = 0f;
@@ -20,7 +21,7 @@ namespace Xeon.XTween
         protected float time = 0f;
         protected float delay = 0f;
         protected float elapsed = 0f;
-        protected float duration = 0.2f;
+        protected float duration = DefaultDuration;
         protected bool playOnAwake = false;
         protected bool useUnscaledTime = true;
         protected EaseType easeType = EaseType.InOutQuad;
@@ -90,7 +91,9 @@ namespace Xeon.XTween
         public virtual void Reset()
         {
             IsSequenced = IsPlaying = IsCompleted = IsPaused = IsKilled = false;
-            StartTime = time = elapsed = delay = duration = 0f;
+            StartTime = time = elapsed = delay = 0f;
+            duration = DefaultDuration;
+            FullDuration = delay + duration;
         }
 
         public virtual void Clear()
@@ -134,7 +137,7 @@ namespace Xeon.XTween
         protected virtual float CalcValue(float elapsed)
         {
             this.elapsed = elapsed;
-            time = elapsed / duration;
+            time = duration <= 0f ? 0f : elapsed / duration;
             return TweenFunctions.Evaluate(easeType, time);
         }
         public virtual void Update() { }

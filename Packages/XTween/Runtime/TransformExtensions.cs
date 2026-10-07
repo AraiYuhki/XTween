@@ -168,11 +168,11 @@ namespace Xeon.XTween
 
         // 回転系
         public static Tweener TweenRotateX(this Transform self, float end, float duration, EaseType type = EaseType.InOutQuad)
-            => GetTween<FloatTween>().SetAccsssor(() => self.rotation.x, value => self.SetRotationX(value)).Setup(end, duration, type);
+            => GetTween<FloatTween>().SetAccsssor(() => self.rotation.eulerAngles.x, value => self.SetRotationX(value)).Setup(end, duration, type);
         public static Tweener TweenRotateY(this Transform self, float end, float duration, EaseType type = EaseType.InOutQuad)
-            => GetTween<FloatTween>().SetAccsssor(() => self.rotation.y, value => self.SetRotationY(value)).Setup(end, duration, type);
+            => GetTween<FloatTween>().SetAccsssor(() => self.rotation.eulerAngles.y, value => self.SetRotationY(value)).Setup(end, duration, type);
         public static Tweener TweenRotateZ(this Transform self, float end, float duration, EaseType type = EaseType.InOutQuad)
-            => GetTween<FloatTween>().SetAccsssor(() => self.rotation.z, value => self.SetRotationZ(value)).Setup(end, duration, type);
+            => GetTween<FloatTween>().SetAccsssor(() => self.rotation.eulerAngles.z, value => self.SetRotationZ(value)).Setup(end, duration, type);
         public static Tweener TweenRotate(this Transform self, Quaternion end, float duration, EaseType type = EaseType.InOutQuad)
             => GetTween<QuaternionTween>().SetAccsssor(() => self.rotation, value => self.rotation = value).Setup(end, duration, type);
         public static Tweener TweenRotate(this Transform self, Vector3 end, float duration, EaseType type = EaseType.InOutQuad)

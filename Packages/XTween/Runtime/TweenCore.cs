@@ -9,12 +9,16 @@ namespace Xeon.XTween
         protected Action<T> setter;
         protected Func<T> getter;
 
-        public TweenCore<T> SetAccsssor(Func<T> getter, Action<T> setter)
+        public TweenCore<T> SetAccessor(Func<T> getter, Action<T> setter)
         {
             this.setter = setter;
             this.getter = getter;
             return this;
         }
+
+        [Obsolete("Use SetAccessor instead.")]
+        public TweenCore<T> SetAccsssor(Func<T> getter, Action<T> setter)
+            => SetAccessor(getter, setter);
 
         public virtual TweenCore<T> Setup(T end, float duration, EaseType easeType = EaseType.InOutQuad, bool isLoop = false)
         {
