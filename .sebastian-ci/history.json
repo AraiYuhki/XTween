@@ -1,0 +1,15 @@
+{
+  "ff02a93093ea3e39e21ea14db0b8db7311c0662c": {
+    "executedAt": "2026-10-04T12:18:01.620265+09:00",
+    "isSuccess": false,
+    "logDirectoryPath": "D:\\Projects\\XTween\\.sebastian-ci\\logs\\ff02a93093ea3e39e21ea14db0b8db7311c0662c",
+    "jobs": [
+      {
+        "jobId": "build",
+        "status": "Failed",
+        "durationSeconds": 0.2,
+        "tests": null
+      }
+    ]
+  }
+}
