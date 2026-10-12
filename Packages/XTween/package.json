@@ -2,7 +2,7 @@
   "name": "jp.xeon.x_tween",
   "author": "Xeon",
   "displayName": "XTween",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "DOTweenライクなTweenライブラリパッケージ。\n早くもないけど、ネイティブコードを使用せずにすべてC#で作成しています。\nコードに何か問題があった場合や、カスタマイズしたい場合はこちらの方が使用しやすいかと思います。",
   "unity": "2023.2"
 }
